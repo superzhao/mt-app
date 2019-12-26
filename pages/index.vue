@@ -4,10 +4,14 @@
       <el-col :span="5">
         <imenu />
       </el-col>
-      <el-col :span="19">2</el-col>
+      <el-col :span="19">
+        <life/>
+      </el-col>
     </el-row>
     <el-row>
-      <el-col :span="24">3</el-col>
+      <el-col :span="24">
+        <article/>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -15,10 +19,14 @@
 <script>
 import Logo from "~/components/Logo.vue";
 import Imenu from "@/components/index/menu";
+import Life from "@/components/index/life";
+import Artistic from "@/components/index/artistic";
 export default {
   components: {
     Logo,
-    Imenu
+    Imenu,
+    Life,
+    Artistic
   }
 };
 </script>
