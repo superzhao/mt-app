@@ -10,7 +10,7 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <article/>
+        <artistic/>
       </el-col>
     </el-row>
   </div>
