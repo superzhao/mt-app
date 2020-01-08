@@ -2,7 +2,7 @@
   <div class="m-menu">
     <dl class="nav" @mouseleave="onKindMouseLeave">
       <dt>全部分类</dt>
-      <dd v-for="(item,idx) in menus" :key="idx" @mouseenter="onKindMouseEnter">
+      <dd v-for="(item,idx) in menu" :key="idx" @mouseenter="onKindMouseEnter">
         <i :class="item.type" />
         {{item.name}}
         <span class="arrow"></span>
@@ -14,9 +14,9 @@
       @mouseenter="onDetailMouseEnter"
       @mouseleave="onDetailMouseLeave"
     >
-      <template v-for="(item,idx) in curMenu.detaile">
+      <template v-for="(item,idx) in curMenu.child">
         <h4 :key="idx">{{item.title}}</h4>
-        <span v-for="(v) in item.list" :key="v">{{v}}</span>
+        <span v-for="(v) in item.child" :key="v">{{v}}</span>
       </template>
     </div>
   </div>
@@ -27,38 +27,14 @@ export default {
   name: "menu",
   data() {
     return {
-      menus: [
-        {
-          type: "food",
-          name: "美食",
-          detaile: [
-            {
-              title: "美食",
-              list: ["代金券", "甜点", "饮品", "自助餐"]
-            },
-            {
-              title: "美食1",
-              list: ["代金券1", "甜点1", "饮品1", "自助餐1"]
-            }
-          ]
-        },
-        {
-          type: "takeout",
-          name: "外卖",
-          detaile: [
-            {
-              title: "外卖",
-              list: ["美团", "饿了么"]
-            }
-          ]
-        }
-      ],
+      menu: this.$store.state.home.menu,
       kind: ""
     };
   },
   computed: {
     curMenu() {
-      return this.menus.filter(item => item.type === this.kind)[0] || [];
+      console.log(this.menu.filter(item => item.type === this.kind)[0],1)
+      return this.menu.filter(item => item.type === this.kind)[0] || [];
     }
   },
   methods: {
