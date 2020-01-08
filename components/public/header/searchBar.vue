@@ -18,21 +18,18 @@
           </button>
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item,idx) in hotPlace" :key="idx">
-              <a href>{{item}}</a>
+            <dd v-for="(item,idx) in $store.state.home.hotPlace" :key="idx">
+              <a href>{{item.name}}</a>
             </dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
             <dd v-for="(item,idx) in searchList" :key="idx">
-              <a href>{{item}}</a>
+              <a href>{{item.name}}</a>
             </dd>
           </dl>
         </div>
         <p class="suggest">
-          <a href>1</a>
-          <a href>2</a>
-          <a href>3</a>
-          <a href>4</a>
+          <a href v-for="(item,idx) in $store.state.home.hotPlace" :key="idx">{{item.name}}</a>
         </p>
         <ul class="nav">
           <li>
@@ -74,15 +71,18 @@
 
 <script>
 import _ from "lodash";
+import { getTop } from "../../../api/header";
+import { async } from 'q';
 export default {
   data() {
     return {
       search: "",
       isFocus: false,
-      hotPlace: ["回过", "打火机"],
-      searchList: ["肉", "红烧肉", "排骨"]
+      hotPlace: [],
+      searchList: []
     };
   },
+  created() {},
   computed: {
     isHotPlace() {
       return this.isFocus && !this.search;
@@ -98,10 +98,17 @@ export default {
     onBlur() {
       this.isFocus = false;
     },
-    onInput() {
-      console.log(this.search);
+    onInput: _.throttle(function(){
+        getTop({ name: this.search }).then(res => {
+          if (res.code == 0) {
+            this.searchList = res.data;
+          } else {
+            this.searchList = [];
+          }
+        });
+      }, 500)
     }
-  }
+  
 };
 </script>
 

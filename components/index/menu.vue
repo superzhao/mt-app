@@ -33,7 +33,6 @@ export default {
   },
   computed: {
     curMenu() {
-      console.log(this.menu.filter(item => item.type === this.kind)[0],1)
       return this.menu.filter(item => item.type === this.kind)[0] || [];
     }
   },

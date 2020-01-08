@@ -5,5 +5,7 @@ export const actions = {
     commit('geo/setPosition', status == 200 ? positonData : { province: '1', city: '' })
     const { status:status1, data: menuData  } = await axios.get('http://127.0.0.1:3000/home/getMenu')
     commit('home/setMenu', status1 == 200&&menuData.code==0? menuData.data.menu : [])
+    const { status:status2, data: hotPlaceData  } = await axios.get('http://127.0.0.1:3000/search/top')
+    commit('home/setHotPlace', status1 == 200&&hotPlaceData.code==0? hotPlaceData.data : [])
   }
 }
