@@ -29,107 +29,42 @@
   </section>
 </template>
 <script>
+import { resultsByKeywords } from "../../api/search";
 export default {
   data: () => {
     return {
       kind: "all",
       list: {
-        all: [
-          {
-            title: "北京维景国际大酒店",
-            pos: "西红门",
-            price: 90,
-            img:
-              "https://p1.meituan.net/msmerchant/3ef69a0c07ea97d666dccdd68f0c0abb485331.jpg@368w_208h_1e_1c"
-          },
-          {
-            title: "小大董",
-            pos: "王府井/东单",
-            price: 288,
-            img:
-              "https://p0.meituan.net/msmerchant/7acf8c7c818aed2b8d3a89f7b70bd1b55654528.jpg@368w_208h_1e_1c"
-          },
-          {
-            title: "谦亨短发设计",
-            pos: "崇文门新世界",
-            price: 288,
-            img:
-              "https://p0.meituan.net/wedding/7f274360936a5233902be9afe5054eef4134276.jpg@240w_180h_1e_1c_1l%7Cwatermark=1&&r=2&p=9&x=2&y=2&relative=1&o=20%7C368w_208h_1e_1c"
-          },
-          {
-            title: "木北造型",
-            pos: "崇文门新世界",
-            price: 288,
-            img:
-              "https://p1.meituan.net/dpmerchantpic/894a230555aedd63c423a454b48e5842180576.jpg@240w_180h_1e_1c_1l%7Cwatermark=1&&r=2&p=9&x=2&y=2&relative=1&o=20%7C368w_208h_1e_1c"
-          },
-          {
-            title: "百老汇影城",
-            pos: "国瑞购物中心",
-            price: 50,
-            img:
-              "https://p0.meituan.net/deal/__31137021__2342842.jpg@368w_208h_1e_1c"
-          },
-          {
-            title: "北京三里屯通盈中心洲际酒店",
-            pos: "三里屯",
-            price: 18888,
-            img:
-              "https://p1.meituan.net/tdchotel/8d2d8549f205d79fbc2319f65ac1ff821861291.png@368w_208h_1e_1c"
-          }
-        ],
-        part: [
-          {
-            title: "北京维景国际大酒店",
-            pos: "西红门",
-            price: 90,
-            img:
-              "https://p1.meituan.net/msmerchant/3ef69a0c07ea97d666dccdd68f0c0abb485331.jpg@368w_208h_1e_1c"
-          },
-          {
-            title: "小大董",
-            pos: "王府井/东单",
-            price: 288,
-            img:
-              "https://p0.meituan.net/msmerchant/7acf8c7c818aed2b8d3a89f7b70bd1b55654528.jpg@368w_208h_1e_1c"
-          }
-        ],
-        spa: [
-          {
-            title: "谦亨短发设计",
-            pos: "崇文门新世界",
-            price: 88,
-            img:
-              "https://p0.meituan.net/wedding/7f274360936a5233902be9afe5054eef4134276.jpg@240w_180h_1e_1c_1l%7Cwatermark=1&&r=2&p=9&x=2&y=2&relative=1&o=20%7C368w_208h_1e_1c"
-          },
-          {
-            title: "木北造型",
-            pos: "崇文门新世界",
-            price: 66,
-            img:
-              "https://p1.meituan.net/dpmerchantpic/894a230555aedd63c423a454b48e5842180576.jpg@240w_180h_1e_1c_1l%7Cwatermark=1&&r=2&p=9&x=2&y=2&relative=1&o=20%7C368w_208h_1e_1c"
-          }
-        ],
-        movie: [
-          {
-            title: "百老汇影城",
-            pos: "国瑞购物中心",
-            price: 50,
-            img:
-              "https://p0.meituan.net/deal/__31137021__2342842.jpg@368w_208h_1e_1c"
-          }
-        ],
-        travel: [
-          {
-            title: "北京三里屯通盈中心洲际酒店",
-            pos: "三里屯",
-            price: 18888,
-            img:
-              "https://p1.meituan.net/tdchotel/8d2d8549f205d79fbc2319f65ac1ff821861291.png@368w_208h_1e_1c"
-          }
-        ]
+        all: [],
+        part: [],
+        spa: [],
+        movie: [],
+        travel: []
       }
     };
+  },
+  created() {
+    resultsByKeywords({ city: this.$store.state.geo.city, keyword:'全部' }).then(
+      res => {
+        if (res.code == 0 && res.data.count) {
+          let pois = res.data.pois;
+          let r = pois
+            .filter(item => item.photos.length)
+            .map(item => {
+              return {
+                title: item.name,
+                pos: item.type.split(";")[0],
+                price: item.biz_ext.cost || "暂无",
+                img: item.photos[0].url,
+                url: "//abc.com"
+              };
+            });
+          this.list.all = r.slice(0,9);
+        } else {
+          this.list.all = [];
+        }
+      }
+    );
   },
   computed: {
     cur: function() {
@@ -144,6 +79,27 @@ export default {
       if (tag === "dd") {
         this.kind = dom.getAttribute("kind");
         let keyword = dom.getAttribute("keyword");
+        resultsByKeywords({ city: this.$store.state.geo.city, keyword }).then(
+          res => {
+            if (res.code == 0 && res.data.count) {
+              let pois = res.data.pois;
+              let r = pois
+                .filter(item => item.photos.length)
+                .map(item => {
+                  return {
+                    title: item.name,
+                    pos: item.type.split(";")[0],
+                    price: item.biz_ext.cost || "暂无",
+                    img: item.photos[0].url,
+                    url: "//abc.com"
+                  };
+                });
+              this.list[this.kind] = r.slice(0, 9);
+            } else {
+              this.list[this.kind] = [];
+            }
+          }
+        );
       } else {
         this.kind = "all";
       }

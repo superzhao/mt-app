@@ -12,7 +12,7 @@ import passport from './interface/utils/passport'
 import user from './interface/user'
 import home from './interface/home'
 import geo from './interface/geo'
-import header from './interface/header'
+import search from './interface/search'
 const app = new Koa()
 config.dev = app.env !== 'production'
 app.keys = ['mt', 'keyskeys']
@@ -51,7 +51,7 @@ async function start() {
   app.use(user.routes(), user.allowedMethods())
   app.use(home.routes(), home.allowedMethods())
   app.use(geo.routes(), geo.allowedMethods())
-  app.use(header.routes(), header.allowedMethods())
+  app.use(search.routes(), search.allowedMethods())
 
   
   app.use((ctx) => {

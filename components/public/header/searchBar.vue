@@ -71,7 +71,7 @@
 
 <script>
 import _ from "lodash";
-import { getTop } from "../../../api/header";
+import { getTop } from "../../../api/search";
 import { async } from 'q';
 export default {
   data() {
