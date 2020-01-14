@@ -17,7 +17,7 @@ router.get('/top', async (ctx) => {
   } catch (e) {
     ctx.body = {
       code: -1,
-      data: e.message
+      msg: e.message
     }
   }
 })
