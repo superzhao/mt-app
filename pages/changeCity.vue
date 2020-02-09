@@ -12,7 +12,7 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <categroy/>
+        <category/>
       </el-col>
     </el-row>
   </div>
@@ -21,12 +21,12 @@
 <script>
 import iSelect from '@/components/changeCity/iselect.vue'
 import hotCitis from '@/components/changeCity/hotCitis.vue'
-// import Categroy from '@/components/changeCity/categroy.vue'
+import category from '@/components/changeCity/category.vue'
 export default {
   components:{
     iSelect,
     hotCitis,
-    // Categroy
+    category
   }
 }
 </script>

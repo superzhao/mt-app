@@ -19,17 +19,18 @@
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
             <dd v-for="(item,idx) in $store.state.home.hotPlace" :key="idx">
-              <a href>{{item.name}}</a>
+              <nuxt-link :to="'/products?keyword='+item.name">{{item.name}}</nuxt-link>
+              
             </dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
             <dd v-for="(item,idx) in searchList" :key="idx">
-              <a href>{{item.name}}</a>
+              <nuxt-link :to="'/products?keyword='+item.name"><p>{{item.name}}1</p></nuxt-link>
             </dd>
           </dl>
         </div>
         <p class="suggest">
-          <a href v-for="(item,idx) in $store.state.home.hotPlace" :key="idx">{{item.name}}</a>
+         <nuxt-link :to="'/products?keyword='+item.name" v-for="(item,idx) in $store.state.home.hotPlace" :key="idx">{{item.name}}</nuxt-link>
         </p>
         <ul class="nav">
           <li>
@@ -96,10 +97,14 @@ export default {
       this.isFocus = true;
     },
     onBlur() {
-      this.isFocus = false;
+      const _this=this
+      setTimeout(function(){
+        _this.isFocus=false
+      },200)
     },
     onInput: _.throttle(function(){
-        getTop({ name: this.search }).then(res => {
+       let city=this.$store.state.geo.city.replace('市','')
+        getTop({ name: this.search,city:city }).then(res => {
           if (res.code == 0) {
             this.searchList = res.data;
           } else {

@@ -1,6 +1,6 @@
 import axios from '../utils/axios';
 /**
- *搜索结果和热门搜索
+ *根据城市和输入框内容返回景点名称列表
  */
 export function getTop(params) {
     return axios({
@@ -11,7 +11,7 @@ export function getTop(params) {
 }
 
 /**
- *首页内容区，根据kind获取列表
+ *根据城市和输入框内容返回产品列表
 * @param city
 * @param keyword,
  */

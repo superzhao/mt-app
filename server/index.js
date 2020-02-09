@@ -13,6 +13,7 @@ import user from './interface/user'
 import home from './interface/home'
 import geo from './interface/geo'
 import search from './interface/search'
+import category from './interface/category'
 const app = new Koa()
 config.dev = app.env !== 'production'
 app.keys = ['mt', 'keyskeys']
@@ -52,8 +53,7 @@ async function start() {
   app.use(home.routes(), home.allowedMethods())
   app.use(geo.routes(), geo.allowedMethods())
   app.use(search.routes(), search.allowedMethods())
-
-  
+  app.use(category.routes(), category.allowedMethods())
   app.use((ctx) => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling
@@ -66,7 +66,7 @@ async function start() {
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
-  
+
 }
 
 start()
